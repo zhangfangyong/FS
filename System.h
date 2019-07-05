@@ -159,5 +159,6 @@ int sys_copy(string oldPath, int type, string newPath);//复制；         //目
 int sys_share(string sharedPath, int type, string sharingPath);
 int sys_write_disk(string diskpath);
 int sys_read_disk(string diskpath);
+int sys_setaccess(string path,string user,char x);
 
 #endif //FS_SYSTEM_H

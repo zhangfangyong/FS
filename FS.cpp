@@ -150,13 +150,8 @@ void create_file(string*cmd, int length) {
         {
             cout << "路径错误！" << endl;
         }
-        else if(signal==0)
-        {
-            cout << "用户无该命令权限！" << endl;
-        }
-        else
-        {
-            cout << "文件已经存在！" << endl;
+        else if(signal==-2){
+
         }
     }
     else {
@@ -279,6 +274,7 @@ void read_file(string*cmd, int length) {
         int B,F;
         FCB* file = sys_returnFCB(path_name, name, 0, parent,B,F);
         if (file != NULL) {
+            cout<<"here";
             string content;
             bool flag;
             content = sys_read_file(file,flag);
@@ -312,7 +308,7 @@ void cd(string*cmd, int length) {
 
         if (signal == 1)
         {
-            cout <<"11111" << endl;
+            //cout <<"11111" << endl;dir
         }
         else if(signal==0)
         {
@@ -455,6 +451,24 @@ void share(string*cmd, int length){
     }
 
 }
+void ato(string*cmd, int length){
+    if(length==4){
+        int signal=sys_setaccess(cmd[1],cmd[2],cmd[3][0]);
+
+        if (signal == 1)
+        {
+            cout << "授权成功！" << endl;
+        }
+        else if(signal==0)
+        {
+            cout << "该文件您无授权权限！" << endl;
+        }
+    }
+    else {
+        cout << cmd[0] << " 语法不正确，请输入正确命令" << endl;
+    }
+
+}
 /******************************************************/
 //虚拟磁盘(内存管理)，实现恢复系统的服务；
 
@@ -527,11 +541,12 @@ void help_command(string*cmd, int length) {
     else if(length==2){
         map <string, int> help_menu;
         help_menu["dir"] = 1, help_menu["mkdir"] = 2, help_menu["rmdir"] = 3;
-        help_menu["create"] = 4, help_menu["delete"] = 5; help_menu["rename"] = 6;
+        help_menu["createFile"] = 4, help_menu["delete"] = 5; help_menu["rename"] = 6;
         help_menu["write"] = 7, help_menu["read"] = 8;
         help_menu["cd"] = 9, help_menu["cd.."] = 10;
         help_menu["cut"] = 11, help_menu["copy"] = 12;
-        help_menu["writeDisk"] = 13, help_menu["readDisk"] = 14, help_menu["viewDisk"] = 15;
+        help_menu["writeDisk"] = 13, help_menu["readDisk"] = 14, help_menu["viewDisk"] = 15,
+        help_menu["createUser"] = 16, help_menu["su"] = 17,help_menu["share"] = 17;
 
 
         //cout << "请输入需要查询的命令(如：help dir);" << endl;
@@ -656,6 +671,18 @@ void help_command(string*cmd, int length) {
                 cout << "Eg:viewDisk" << endl;
                 cout << "显示虚拟磁盘情况。" << endl;
                 break;
+            case 16://user
+                cout << "Eg:createUser" << endl;
+                cout << "创建用户。" << endl;
+                break;
+            case 17://su
+                cout << "Eg:su" << endl;
+                cout << "切换用户。" << endl;
+                break;
+            case 18://su
+                cout << "Eg:share" << endl;
+                cout << "共享文件。" << endl;
+                break;
 
             default:
                 cout << "您输入的指令有误！！！" << endl;
@@ -671,26 +698,35 @@ void help_command(string*cmd, int length) {
 void Menu()
 {
 
-    cout<< "  欢迎使用文件系统 "     << endl;
-    cout<< "  命令提示:        "  << endl;
-    cout<< "  help 命令使用方示"<<endl;
-    cout<< "  createUser 创建用户"<<endl;
-    cout<< "  su 切换用户"<<endl;
-    cout<< "  dir 查看目录的内容   "   <<endl;
-    cout<< "  mkdir 创建目录      " << endl;
-    cout<< "  rmdir 删除目录      " <<endl;
-    cout<< "  create  创建文件    " << endl;
-    cout<< "  delete  删除文件    "<<endl;
-    cout<< "  rename 重命名命令   "<<endl;
-    cout<< "  read 读取文件内容   "<<endl;
-    cout<< "  write 向文件写内容  " << endl;
-    cout<< "  cd 进入子目录 " << endl;
-    cout<< "  cd .. 返回上一级目录  "<<endl;
-    cout<< "  cut 剪切 " << endl;
-    cout<< "  copy 复制 "<<endl;
-    cout<< "  writeDisk 向磁盘写内容 " << endl;
-    cout<< "  readDisk 读取磁盘内容"<<endl;
-    cout<< "  viewDisk 查看磁盘状态" << endl;
+    cout<< "        欢迎使用文件系统 "     << endl;
+    cout<< " *******************************"  << endl;
+    cout<< " ***********用户操作*************"  << endl;
+    cout<< "  help              命令使用方示"<<endl;
+    cout<< "  createUser        创建用户"<<endl;
+    cout<< "  su                切换用户"<<endl;
+    cout<< " *******************************"  << endl;
+    cout<< " ***********目录操作*************"  << endl;
+    cout<< "  dir               查看目录的内容   "   <<endl;
+    cout<< "  mkdir             创建目录      " << endl;
+    cout<< "  rmdir             删除目录      " <<endl;
+    cout<< "  cd                进入子目录 " << endl;
+    cout<< "  cd ..             返回上一级目录  "<<endl;
+    cout<< " *******************************"  << endl;
+    cout<< " ***********文件操作*************"  << endl;
+    cout<< "  createFile        创建文件    " << endl;
+    cout<< "  delete            删除文件    "<<endl;
+    cout<< "  rename            重命名命令   "<<endl;
+    cout<< "  read              读取文件内容   "<<endl;
+    cout<< "  writ              向文件写内容  " << endl;
+    cout<< "  cut               剪切 " << endl;
+    cout<< "  copy              复制 "<<endl;
+    cout<< "  share             共享 "<<endl;
+    cout<< " *******************************"  << endl;
+    cout<< " ***********磁盘操作*************"  << endl;
+    cout<< "  writeDisk         向磁盘写内容 " << endl;
+    cout<< "  readDisk          读取磁盘内容"<<endl;
+    cout<< "  viewDisk          查看磁盘状态" << endl;
+    cout<< " *******************************"  << endl;
 
 }
 
@@ -814,7 +850,10 @@ void Command::exe_command() {
         su(p, q);
     }
     else if (p[0] == "share") {
-        su(p, q);
+        share(p, q);
+    }
+    else if (p[0] == "ato") {
+        ato(p, q);
     }
     else {
         cout << _cmd[0] << "  doesn't exist, Use menu to check the command!" << endl;

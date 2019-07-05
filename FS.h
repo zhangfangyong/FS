@@ -21,6 +21,7 @@ void cdback();//返回上一级目录；
 void cut(string*cmd, int length);//剪切；
 void copy(string*cmd, int length);//复制；
 void share(string*cmd, int length);
+void ato(string*cmd, int length);
 /**************************************************/
 //虚拟磁盘(内存管理)，实现恢复系统的服务；
 
